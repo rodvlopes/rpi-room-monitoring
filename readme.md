@@ -6,12 +6,12 @@ Web project to read data from rpi DS18B20 module, DHT11 and present as a graphic
 Depends on
 ----------
 
-Ruby 2+
-Python 2.7+
-Adafruit_Python_DHT python module
-w1_therm rpi linux module
-sqlite3 
-sqlite3 ruby gem
+* Ruby 2+
+* Python 2.7+
+* Adafruit_Python_DHT python module
+* w1_therm rpi linux module
+* sqlite3 
+* sqlite3 ruby gem
 
 Cron job
 --------
