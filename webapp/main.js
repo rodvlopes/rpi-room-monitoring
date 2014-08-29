@@ -11,26 +11,45 @@ var loadDataCallback = function (data) {
         sensor2_humi.push( [timestamp, d[3]] );
     });
 
+    var xplotLines = buildPlotlineArray(new Date(sensor1_temp[0][0]), new Date(sensor1_temp[sensor1_temp.length-1][0]));
+
     $('#container').highcharts('StockChart', {
 
-
+        legend: { enabled: true },
+        
         rangeSelector : {
-            selected : 1,
-            inputEnabled: false 
-        },
+            selected : 0,
+            inputEnabled: false,
+            buttons: [  {   type: 'day',    count: 1,   text: '1d'}, 
+                        {   type: 'day',    count: 7,   text: '7d'}, 
+                        {   type: 'month',  count: 1,   text: '1m'}, 
+                        {   type: 'ytd',    text: 'YTD'}, 
+                        {   type: 'year',   count: 1,   text: '1y'}, 
+                        {   type: 'all',    text: 'All'} ]
+                    },
 
         title : {
             text : 'Ambiente da Sala'
         },
 
+        xAxis: {
+            plotLines: xplotLines
+        },
+
         yAxis: [{
-            opposite: false,
+            opposite: true,
+            tickWidth: 2,
+            tickColor: 'rgb(50, 250, 50)',
+            position: 'inside',
             labels: {
                 format: '{value} °C'
             },
         }, 
         {
             opposite: true,
+            tickWidth: 2,
+            tickColor: 'rgb(124, 181, 236)',
+            offset: 10,
             labels: {
                 format: '{value} %'
             }
@@ -71,3 +90,22 @@ $(function () {
     $.getJSON('data.json', loadDataCallback);
 });
 
+
+function buildPlotlineArray(dtInicio, dtFim) {
+    var oneday = 24*60*60*1000;
+    //var tzoffset=0;
+    var tzoffset=dtFim.getTimezoneOffset()/60;
+    dtFim.setHours(-tzoffset);
+    dtFim.setMinutes(0);
+    dtFim.setSeconds(0);
+
+    var result = [];
+    result.push({ value: dtFim.getTime(), width: 1, color: 'green', dashStyle: 'dash'});
+
+    while( dtFim > dtInicio ) {
+        dtFim = new Date(dtFim -= oneday);
+        result.push({ value: (dtFim.getTime()), width: 1, color: 'green', dashStyle: 'dash'});        
+    }
+
+    return result;
+}
