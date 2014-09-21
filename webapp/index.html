@@ -2,11 +2,26 @@
 <html>
 <head>
 	<title>Raspberry Pi - Room Monitoring</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="highstock.js"></script>
     <script src="main.js"></script>
+    <style>
+    #led { width: 201px; float: left; border-right: 1px dashed #999; }
+    #led .status-holder { width: 120px; display: inline-block; }
+    #led button { width: 60px; }
+    #buz { float: left; margin-left: 12px; }
+}
+    </style>
 </head>
 <body>
     <div id="container" style="height: 600px; min-width: 310px"></div>
+    <div id="led">
+    	<span class="status-holder">LED: <span class="status"></span></span>
+    	<button>ligar</button>
+    </div>
+    <div id="buz">
+    	<button>buzinar</button>
+        <input type="text" value="" placeholder="introduza as notas" />
+    </div>
 </body>
 </html>

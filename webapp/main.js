@@ -88,7 +88,47 @@ var loadDataCallback = function (data) {
 
 $(function () {
     $.getJSON('data.json', loadDataCallback);
+    updateLedStatus();
+    $('#buz button').on('click', function () {
+        var notas = translateNotas( $('#buz input').val() );
+        $.get('/services/buz?notas='+notas, function() {
+            //do nothing yet
+        });
+    });
 });
+
+
+
+var updateLedStatus = function() {
+
+    $('#led .status').html('<img src="loading.gif"></img>');
+    $('#led button').attr('disabled', true);
+
+    $.get('/services/ledstatus', function(status){
+        var statusMsg = 'desligado';
+        var btnMsg = 'ligar';
+        var btnAction = function() {
+            //turnoff
+            $.get('/services/turnledon', function() {
+                updateLedStatus();
+            });
+        }
+
+        if (status == '1') {
+            statusMsg = 'ligado';
+            btnMsg = 'desligar';
+            btnAction = function() {
+                //turnoff
+                $.get('/services/turnledoff', function() {
+                    updateLedStatus();
+                });
+            }
+        }
+
+        $('#led .status').html(statusMsg);
+        $('#led button').attr('disabled', false).text(btnMsg).off('click').on('click', btnAction);
+    });
+}
 
 
 function buildPlotlineArray(dtInicio, dtFim) {
@@ -108,4 +148,32 @@ function buildPlotlineArray(dtInicio, dtFim) {
     }
 
     return result;
+}
+
+
+function translateNotas(sequencia) {
+    var frequencyMap = {
+        'do'    : 263.63,
+        'do#'   : 277.18,
+        're'    : 293.66,
+        're#'   : 311.13,
+        'mi'    : 329.63,
+        'fa#'   : 369.99,
+        'fa'    : 349.23,
+        'sol'   : 391.99,
+        'sol#'  : 415.31,
+        'la'    : 440.00,
+        'la#'   : 466.16,
+        'si'    : 493.88,
+    }
+
+    var tempo = 500;
+    if (!sequencia) return '';
+    sequenciaSplit = sequencia.toLowerCase().split(/\s+/);
+    sequenciaTranlated = '';
+    sequenciaSplit.forEach(function(nota) {
+        sequenciaTranlated += 4*frequencyMap[nota] + ' ' + tempo + ' ';
+    });
+
+    return sequenciaTranlated;
 }
