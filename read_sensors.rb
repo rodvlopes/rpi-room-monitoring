@@ -8,8 +8,8 @@ tempdata=thermread.split('t=')[1]
 s1_temp=tempdata.to_f/1000
 puts "sensor1_temp: #{s1_temp}"
 
-#DHT11
-sensor2=`./dht11_read.py` 
+#DHT11 ou DHT22
+sensor2=`./dht_read.py` 
 s2_temp, s2_humi = sensor2.strip.split('|')
 puts "sensor2_temp: #{s2_temp}, sensor2_humi: #{s2_humi}"
 
