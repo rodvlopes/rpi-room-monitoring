@@ -1,7 +1,7 @@
 RPi Room Monitoring
 ===================
 
-Web project to read data from rpi DS18B20 module, DHT11 and present as a graphic 
+Web project to read data from rpi DS18B20 module, DHT22 or DHT11 and present as a graphic 
 
 Depends on
 ----------
